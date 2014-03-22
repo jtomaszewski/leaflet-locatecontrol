@@ -90,9 +90,9 @@ L.Control.Locate = L.Control.extend({
             popup: "You are within {distance} {unit} from this point",
             outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
         },
-        compassOptions: { // set to null, if you don't want to use navigation.compass
+        compassOptions: { // set it to null, to turn off compass mode
             frequency: 100,
-            filter: 3
+            // filter: 3 // not supported on Android - don't set it! if it's set, watchHeading stops working on Android
         },
         locateOptions: {
             maxZoom: Infinity,
@@ -379,7 +379,10 @@ L.Control.Locate = L.Control.extend({
         };
 
         var updateCompassHeading = function(degrees) {
-            self._innerMarker.options.angle = degrees;
+            if (self._innerMarker) {
+                self._innerMarker.options.angle = degrees;
+                self._innerMarker.update();
+            }
         };
 
         // event hooks
